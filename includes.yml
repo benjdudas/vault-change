@@ -1,10 +1,10 @@
 ---
-- name: register item
+- name: debug item
   debug:
     msg: "{{ item }}"
   register: cred_name
 
-- name: register item value
+- name: debug item value
   debug:
     msg: "{{ creds[item] }}"
 
