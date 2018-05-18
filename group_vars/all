@@ -1,0 +1,7 @@
+uri_user: 'admin'
+uri_pass: 'password'
+
+#Variable mapping current cred name to new cred name
+creds:
+  current_name: new_name
+  current_name: new_name

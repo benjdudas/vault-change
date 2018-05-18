@@ -1,0 +1,14 @@
+---
+
+  tasks:
+    - name: testing vars
+      debug:
+        msg: "key: {{ item }}"
+
+        #- name: testing value
+        #debug:
+        #msg: "value: {{ item }}"
+        # with_items: "{{ creds.values() }}"
+
+
+...

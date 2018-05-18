@@ -1,0 +1,58 @@
+---
+- name: register item
+  debug:
+    msg: "{{ item }}"
+  register: cred_name
+
+- name: register item value
+  debug:
+    msg: "{{ creds[item] }}"
+
+- name: grab api token
+  uri:
+    url: https://awx/api/v2/authtoken/
+    method: POST
+    header: "Content-Type: application/json"
+    body_format: json
+    body: '{ "username": "{{ uri_user }}", "password": "{{ uri_pass }}" }'
+    validate_certs: no
+    status_code: 200
+    return_content: yes
+  register: new_token
+
+- name: Debug token
+  debug:
+    msg: "{{ new_token.json.token }}"
+
+- name: getting vault creds
+  uri:
+    url: https://awx/api/v2/credentials/?credential_type=3&&name={{ item }}
+    headers:
+      Authorization: "Token {{ new_token.json.token }}"
+      Content-Type: "application/json"
+    validate_certs: no
+    follow_redirects: all
+    return_content: yes
+    method: "GET"
+  register: vault_cred
+
+- name: Debug cred output
+  debug:
+    msg: "{{ vault_cred.json.results[0].id }}"
+
+- name: change credential name
+  uri:
+    url: https://awx/api/v2/credentials/{{ vault_cred.json.results[0].id }}/
+    method: PATCH
+    headers:
+      Authorization: "Token {{ new_token.json.token }}"
+      Content-Type: "application/json"
+    body_format: json
+    body: '{ "name": "{{ creds[item] }}", "description": "", "organization": 1, "credential_type": 3, "inputs": { "vault_password": "$encrypted$" }}'
+    validate_certs: no
+    status_code: 200
+    return_content: yes
+
+
+
+...
