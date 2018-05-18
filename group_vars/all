@@ -1,5 +1,6 @@
 uri_user: 'admin'
 uri_pass: 'password'
+tower_hostname: 'awx'
 
 #Variable mapping current cred name to new cred name
 creds:
