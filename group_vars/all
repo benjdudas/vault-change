@@ -4,4 +4,5 @@ uri_pass: 'password'
 #Variable mapping current cred name to new cred name
 creds:
   current_name: new_name
-  current_name: new_name
+  vault-1: new-vault1
+  vault-2: new-vault2
